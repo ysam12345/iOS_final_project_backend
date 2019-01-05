@@ -16,10 +16,11 @@ def index():
 @app.route('/getUserNotificationList', methods=['GET'])
 def getUserNotificationList():
     access_token = request.args.get('facebook_token')
-    user = model.getFacebookUserInfo(access_token)
+    userNotificationList = model.getUserNotificationList(access_token)
     response = {"code":"200"}
-    if user!=None :
+    if userNotificationList!=None :
         response["status"] = "ok"
+        response["data"] = userNotificationList
         return json.dumps(response)
     else :
         response["code"] = "503"
@@ -39,5 +40,31 @@ def checkToken():
         response["error"] = "invalid token"
         return json.dumps(response)
 
+@app.route('/addAccount', methods=['GET'])
+def addAccount():
+    access_token = request.args.get('facebook_token')
+    result = model.addAccount(access_token)
+    response = {"code":"200"}
+    if result!=None :
+        response["status"] = "ok"
+        return json.dumps(response)
+    else :
+        response["code"] = "503"
+        response["error"] = "invalid token"
+        return json.dumps(response)
+
+@app.route('/addNotification', methods=['GET'])
+def addNotification():
+    access_token = request.args.get('facebook_token')
+    notification_data = request.args.get('notification_data')
+    result = model.addNotification(access_token, notification_data)
+    response = {"code":"200"}
+    if result!=None :
+        response["status"] = "ok"
+        return json.dumps(response)
+    else :
+        response["code"] = "503"
+        response["error"] = "invalid token"
+        return json.dumps(response)
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=3000)
+    app.run(host='0.0.0.0', port=3000, debug=True)
