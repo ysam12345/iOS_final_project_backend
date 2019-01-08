@@ -137,6 +137,6 @@ class Model:
             iOS_final_project_db = client["iOS_final_project"]
             result = list(iOS_final_project_db["account"].find({}, {'_id': False}))
             for i in result:
-                self.sendRemoteNotification(result[i].device_token, content)
+                self.sendRemoteNotification(i["device_token"], content)
             print(result)
         return result 
