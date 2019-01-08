@@ -121,3 +121,22 @@ class Model:
         token_hex = device_token
         payload = Payload(alert=content, sound="default", badge=1, mutable_content=True)
         apns.gateway_server.send_notification(token_hex, payload)
+
+    def sendRemoteNotificationToAllAccount(self, access_token, content):
+        user = None
+        result = None
+        try :
+            user = self.getUserByToken(access_token)
+        except :
+            pass
+        # if access is exist in db
+        if user!=None and content!=None :
+            print(user["facebook_id"])
+            # connect db
+            client = self._db.connect()
+            iOS_final_project_db = client["iOS_final_project"]
+            result = list(iOS_final_project_db["account"].find({}, {'_id': False}))
+            for i in result:
+                self.sendRemoteNotification(result[i].device_token, content)
+            print(result)
+        return result 

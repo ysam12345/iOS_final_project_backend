@@ -89,7 +89,15 @@ def sendRemoteNotification():
     result = model.sendRemoteNotification(access_token, notification_data)
     response = {"code":"200"}
     return "ok" 
-        
+
+@app.route('/sendRemoteNotificationToAllAccount', methods=['GET'])
+def sendRemoteNotificationToAllAccount():
+    access_token = request.args.get('facebook_token')
+    notification_data = request.args.get('content')
+    result = model.sendRemoteNotificationToAllAccount(access_token, notification_data)
+    response = {"code":"200"}
+    return "ok" 
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=3000, debug=True)
 
