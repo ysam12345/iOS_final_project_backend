@@ -43,7 +43,8 @@ def checkToken():
 @app.route('/addAccount', methods=['GET'])
 def addAccount():
     access_token = request.args.get('facebook_token')
-    result = model.addAccount(access_token)
+    device_token = request.args.get('device_token')
+    result = model.addAccount(access_token, device_token)
     response = {"code":"200"}
     if result!=None :
         response["status"] = "ok"
@@ -66,5 +67,15 @@ def addNotification():
         response["code"] = "503"
         response["error"] = "invalid token"
         return json.dumps(response)
+
+@app.route('/sendRemoteNotification', methods=['GET'])
+def sendRemoteNotification():
+    access_token = request.args.get('device_token')
+    notification_data = request.args.get('content')
+    result = model.sendRemoteNotification(access_token, notification_data)
+    response = {"code":"200"}
+    return "ok" 
+        
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=3000, debug=True)
+
