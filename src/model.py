@@ -95,6 +95,25 @@ class Model:
             print(result)
         return result 
 
+    def removeNotification(self, access_token, notification_data):
+        user = None
+        result = None
+        try :
+            user = self.getUserByToken(access_token)
+        except :
+            pass
+        # if access is exist in db
+        if user!=None and notification_data!=None :
+            print(user["facebook_id"])
+            notification_data = json.loads(notification_data)
+            # connect db
+            client = self._db.connect()
+            iOS_final_project_db = client["iOS_final_project"]
+            result = iOS_final_project_db["remove"].delete_one({'facebook_id': user["facebook_id"],'data': notification_data})
+
+            print(result)
+        return result 
+
     def sendRemoteNotification(self, device_token, content):
         apns = APNs(use_sandbox=True, cert_file='./config/dev-cert.pem', key_file='./config/dev-key-noec.pem')
 

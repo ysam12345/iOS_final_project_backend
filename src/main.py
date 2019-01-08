@@ -68,6 +68,20 @@ def addNotification():
         response["error"] = "invalid token"
         return json.dumps(response)
 
+@app.route('/removeNotification', methods=['GET'])
+def removeNotification():
+    access_token = request.args.get('facebook_token')
+    notification_data = request.args.get('notification_data')
+    result = model.removeNotification(access_token, notification_data)
+    response = {"code":"200"}
+    if result!=None :
+        response["status"] = "ok"
+        return json.dumps(response)
+    else :
+        response["code"] = "503"
+        response["error"] = "invalid token"
+        return json.dumps(response)
+
 @app.route('/sendRemoteNotification', methods=['GET'])
 def sendRemoteNotification():
     access_token = request.args.get('device_token')
