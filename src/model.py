@@ -109,7 +109,7 @@ class Model:
             # connect db
             client = self._db.connect()
             iOS_final_project_db = client["iOS_final_project"]
-            result = iOS_final_project_db["remove"].delete_one({'facebook_id': user["facebook_id"],'data': notification_data})
+            result = iOS_final_project_db["notification_list"].delete_one({'facebook_id': user["facebook_id"],'data': notification_data})
 
             print(result)
         return result 
